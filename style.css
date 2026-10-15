@@ -1,0 +1,2211 @@
+﻿/* ==========================================================
+   LA VIE DE TITOUAN � feuille de style du livre-jeu
+   Style repris de la page de r�f�rence (livresjeux.roulioz.net)
+
+   Toute la page est dessin�e autour d'une unit� unique --k :
+   la page se met donc � l'�chelle comme une affiche, quelle que
+   soit la taille de l'�cran, et JAMAIS de barre de d�filement.
+   ========================================================== */
+
+
+/* ----------------------------------------------------------
+   0. L'UNIT� DE MISE � L'�CHELLE
+   --k = la plus petite des deux dimensions de l'�cran.
+   Tout le reste est un multiple de --k.
+   ---------------------------------------------------------- */
+:root {
+    --k: min(1vh, 0.7vw);
+}
+
+@media (max-width: 700px) {
+    :root {
+        --k: 0.9vh;
+    }
+}
+
+/* Page en grand format : tout est multipli� par 1,5 */
+body.grand {
+    --k: min(1.5vh, 1.05vw);
+}
+
+@media (max-width: 700px) {
+    body.grand {
+        --k: 1.15vh;
+    }
+}
+
+/* En grand format, l'image et les libell�s c�dent de la place au texte */
+body.grand .img,
+body.grand .images .img:only-child {
+    max-height: calc(var(--k) * 22);
+}
+
+body.grand .img-manque,
+body.grand .img-manque:only-child {
+    height: calc(var(--k) * 21);
+}
+
+body.grand .choix1 p {
+    font-size: clamp(8.8px, 2.2 vh, 30.8px);
+    margin: calc(var(--k) * 1.1) 0 calc(var(--k) * 0.15) 0;
+}
+
+body.grand .choix1 a {
+    font-size: clamp(6.4px, 1.6 vh, 22.4px);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* ----------------------------------------------------------
+   1. PAGE REMPLIE DE HAUT EN BAS
+   ---------------------------------------------------------- */
+html {
+    height: 100%;
+    overflow-y: auto;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    font-family: "Bookman Old Style", "Georgia", "Times New Roman", serif;
+    font-size: clamp(6.2px, 1.6 vh, 21.7px);
+    line-height: 1.5;
+    text-align: center;
+    color: #ffffff;
+    background-color: #000000;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
+}
+
+/* Assombrissement pos� par-dessus l'image pour rendre le texte lisible */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.62);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Fonds plus charg�s en image : on assombrit encore plus */
+body.fond-debut::after {
+    background: rgba(0, 0, 0, 0.87);
+}
+
+body.fond-fifa::after {
+    background: rgba(0, 0, 0, 0.84);
+}
+
+/* Le contenu : une seule colonne qui remplit l'�cran */
+main {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 auto;
+    min-height: 0;
+    min-height: 100dvh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 calc(var(--k) * 1) 0;
+}
+
+
+/* ----------------------------------------------------------
+   1 bis. UN FOND PAR SC�NE
+   Pour ajouter une image de fond : d�poser le fichier dans le
+   dossier du projet puis remplacer l'URL ci-dessous.
+   Exemple : .fond-elisa { background-image: url("elisa.jpg"); }
+   ---------------------------------------------------------- */
+
+/* D�but / chambre de Titouan */
+.fond-debut {
+    background-image: url("elio_image_pagedebut.png");
+}
+.fond-chambre {
+    background-image: url("choix1.png");
+}
+
+/* La cuisine et le frigo */
+.fond-cuisine,
+.fond-frigo {
+    background-image: url("cuisine.png");
+}
+
+/* FIFA */
+.fond-fifa {
+    background-image: url("reference-fifa.png");
+}
+
+/* Discord � fond bleu nuit (remplacer par une image si disponible) */
+.fond-discord {
+    background-image: linear-gradient(160deg, #2b2d5c 0%, #171a33 45%, #05060f 100%);
+}
+
+/* Minecraft � fond de nuit / pierre */
+.fond-minecraft {
+    background-image: linear-gradient(160deg, #23341f 0%, #16241a 45%, #05080a 100%);
+}
+
+/* Rocket League � fond sombre hangar */
+.fond-rocketleague {
+    background-image: linear-gradient(160deg, #24303d 0%, #131a22 45%, #04070a 100%);
+}
+
+/* Elisa / TikTok � fond violet-rose */
+.fond-elisa {
+    background-image: linear-gradient(160deg, #4a2050 0%, #2a1330 45%, #080410 100%);
+}
+
+/* La nuit / la fin des branches */
+.fond-nuit,
+.fond-sommeil {
+    background-image: linear-gradient(160deg, #1b2233 0%, #0c1018 50%, #030406 100%);
+}
+
+
+/* ----------------------------------------------------------
+   2. BARRE DE TITRE (grande barre noire en haut de page)
+   ---------------------------------------------------------- */
+.barre {
+    flex: 0 0 auto;
+    width: 100%;
+    margin: 0 0 calc(var(--k) * 1) 0;
+    padding: calc(var(--k) * 1.1) 10px calc(var(--k) * 1.2) 10px;
+    background: #000000;
+    border: 3px solid #242424;
+}
+
+.barre h1 {
+    margin: 0;
+    font-size: clamp(16px, 4 vh, 56px);
+    font-weight: normal;
+    line-height: 1.2;
+    color: #d9d9d9;
+    text-shadow: 0 0 12px #000000;
+}
+
+/* L'heure de la sc�ne */
+.heure {
+    margin: calc(var(--k) * 0.5) 0 0 0;
+    font-size: clamp(7.6px, 1.9 vh, 26.6px);
+    letter-spacing: 3px;
+    color: #c4c4c4;
+}
+
+
+/* ----------------------------------------------------------
+   3. TEXTE DE LA SC�NE (au-dessus des images)
+   ---------------------------------------------------------- */
+.texte {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    min-height: 0;
+    overflow-y: visible;
+    margin: 0 auto calc(var(--k) * 0.9) auto;
+    padding: 0 calc(var(--k) * 1.8);
+    font-size: clamp(7.8px, 2 vh, 27.3px);
+    line-height: 1.9;
+    color: #ffffff;
+    text-shadow: 0 1px 4px #000000;
+
+    /* Pas de scroll interne : si la sc�ne est trop longue pour l'�cran,
+       c'est toute la page qui d�file : rien n'est coup�.
+       (flex-shrink: 0, donc le bloc des choix reste atteignable.) */
+}
+
+
+
+.texte::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.texte {
+    scrollbar-width: none;
+}
+
+.texte p {
+    margin: 0 0 1em 0;
+}
+
+.texte p:last-child {
+    margin-bottom: 0;
+}
+
+.texte strong {
+    color: #f4f4f4;
+}
+
+.texte .question {
+    font-style: italic;
+    font-size: 1.05em;
+    margin-top: 1.2em;
+}
+
+/* Bulles de conversation (branche Elisa) */
+.texte .moi,
+.texte .lui {
+    display: block;
+    max-width: 620px;
+    margin: 0 auto 0.8em auto;
+    padding: calc(var(--k) * 0.9) calc(var(--k) * 1.5);
+    background: rgba(10, 10, 10, 0.75);
+    border: 1px solid #303030;
+    border-radius: calc(var(--k) * 1.6);
+    text-align: left;
+    line-height: 1.6;
+    text-shadow: none;
+}
+
+.texte .moi {
+    border-bottom-right-radius: 4px;
+}
+
+.texte .lui {
+    border-bottom-left-radius: 4px;
+    color: #eeeeee;
+}
+
+/* La page est remplie du haut jusqu'en bas : le texte occupe toute la
+   place restante et reste centr� dans son bloc. Les marges � auto �
+   disparaissent si le texte est trop long, donc rien n'est coup�. */
+main .texte > p:first-child {
+    margin-top: auto;
+}
+
+main .texte > p:last-child {
+    margin-bottom: auto;
+}
+
+
+/* ----------------------------------------------------------
+   4. IMAGES DE LA SC�NE (centr�es, c�te � c�te)
+   ---------------------------------------------------------- */
+.images {
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: calc(var(--k) * 2);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 calc(var(--k) * 0.9) 0;
+    overflow: visible;
+}
+
+.img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    margin: calc(var(--k) * 0.45);
+    border: 3px solid #1c1c1c;
+    border-radius: 6px;
+    box-shadow: 0 6px 26px rgba(0, 0, 0, 0.75);
+    opacity: 0.97;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.img:hover {
+    opacity: 1;
+    transform: scale(1.02);
+}
+
+/* Une seule image sur la page : elle peut �tre plus grande */
+.images .img:only-child {
+    max-width: 100%;
+}
+
+/* Emplacement pr�vu quand l'image n'existe pas encore */
+.img-manque {
+    max-width: 100%;
+    width: 100%;
+    height: calc(var(--k) * 34);
+    min-height: calc(var(--k) * 9);
+    margin: calc(var(--k) * 0.45);
+    padding: calc(var(--k) * 1.4);
+    background: rgba(0, 0, 0, 0.55);
+    border: 3px dashed #6d6d6d;
+    border-radius: 8px;
+    font-size: clamp(6.8px, 1.7 vh, 23.8px);
+    font-style: italic;
+    color: #cccccc;
+}
+
+.img-manque:only-child {
+    max-width: 100%;
+}
+
+
+/* ----------------------------------------------------------
+   5. BLOC DES CHOIX (grand bloc noir, coins arrondis, pleine largeur)
+   ---------------------------------------------------------- */
+.choix1 {
+    flex: 0 0 auto;
+    width: 70%;
+    max-width: 700px;
+    min-width: 300px;
+    /* Choices pushed to bottom with top margin, no bottom margin */
+    margin: calc(var(--k) * 0.9) auto 0 auto;
+    padding: calc(var(--k) * 0.9) 18px calc(var(--k) * 1.4) 18px;
+    background: #0d0d0d;
+    border: 4px solid #232323;
+    border-radius: calc(var(--k) * 2.4);
+}
+
+.choix1 p {
+    margin: calc(var(--k) * 1.5) 0 calc(var(--k) * 0.2) 0;
+    font-size: clamp(10.8px, 2.7 vh, 37.8px);
+    color: #e8e8e8;
+}
+
+.choix1 p:first-child {
+    margin-top: 0;
+}
+
+.choix1 a {
+    display: inline-block;
+    padding: calc(var(--k) * 0.35) calc(var(--k) * 1.3);
+    color: #ffffff;
+    font-size: clamp(7.4px, 1.8 vh, 25.9px);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.choix1 a:hover {
+    background-color: #303030;
+}
+
+.choix1 a:active {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+
+/* ----------------------------------------------------------
+   5 bis. PAGES � BEAUCOUP DE TEXTE (classe "dense" sur le body)
+   Tout est resserr� pour que la sc�ne tienne sans scroller.
+   ---------------------------------------------------------- */
+body.dense .barre {
+    padding: calc(var(--k) * 0.6) 10px calc(var(--k) * 0.7) 10px;
+}
+
+body.dense .heure {
+    margin-top: calc(var(--k) * 0.3);
+}
+
+body.dense .texte {
+    font-size: clamp(6.4px, 1.6 vh, 22.4px);
+    line-height: 1.35;
+}
+
+body.dense .texte p {
+    margin: 0 0 0.25em 0;
+}
+
+body.dense .texte .question {
+    margin-top: 0.5em;
+}
+
+body.dense .texte .moi,
+body.dense .texte .lui {
+    max-width: 720px;
+    margin-bottom: 0.25em;
+    padding: calc(var(--k) * 0.5) calc(var(--k) * 1.2);
+}
+
+body.dense .img,
+body.dense .images .img:only-child {
+    max-height: calc(var(--k) * 24);
+}
+
+body.dense .img-manque,
+body.dense .img-manque:only-child {
+    height: calc(var(--k) * 16);
+    min-height: calc(var(--k) * 7);
+    padding: calc(var(--k) * 0.8);
+}
+
+body.dense .choix1 {
+    padding: calc(var(--k) * 0.5) 14px calc(var(--k) * 0.9) 14px;
+}
+
+body.dense .choix1 p {
+    margin: calc(var(--k) * 0.5) 0 calc(var(--k) * 0.1) 0;
+}
+
+body.dense .choix1 a {
+    padding: calc(var(--k) * 0.25) 10px;
+}
+
+/* Pages tr�s charg�es : on resserre encore d'un cran */
+body.serre .barre {
+    padding: calc(var(--k) * 0.4) 10px calc(var(--k) * 0.5) 10px;
+}
+
+body.serre .barre h1 {
+    font-size: clamp(13.2px, 3.3 vh, 46.2px);
+}
+
+body.serre .heure {
+    font-size: clamp(6.4px, 1.6 vh, 22.4px);
+}
+
+body.serre .texte {
+    font-size: clamp(5.4px, 1.4 vh, 18.9px);
+    line-height: 1.25;
+}
+
+body.serre .texte .moi,
+body.serre .texte .lui {
+    padding: calc(var(--k) * 0.35) calc(var(--k) * 1);
+}
+
+/* Sur ces pages, une vraie image garde une place visible
+   (les cadres pointill�s, eux, restent petits). */
+body.serre .img,
+body.serre .images .img:only-child {
+    max-height: calc(var(--k) * 28);
+}
+
+body.serre .img-manque,
+body.serre .img-manque:only-child {
+    height: calc(var(--k) * 12);
+    min-height: calc(var(--k) * 6);
+}
+
+/* L'illustration de Titouan (choix1.png) est l'image de couverture du
+   livre : sur ses pages, la place libre permet de la montrer plus grande.
+   Cette r�gle vient apr�s `body.dense` / `body.serre` pour l'emporter. */
+body.img-grande .img,
+body.img-grande .images .img:only-child {
+    max-height: calc(var(--k) * 52);
+}
+
+body.serre .choix1 {
+    padding: calc(var(--k) * 0.3) 14px calc(var(--k) * 0.6) 14px;
+}
+
+body.serre .choix1 p {
+    margin: calc(var(--k) * 0.4) 0 calc(var(--k) * 0.1) 0;
+}
+
+body.serre .bcommencer {
+    padding: calc(var(--k) * 0.55) calc(var(--k) * 2);
+}
+
+
+/* ----------------------------------------------------------
+   6. LIEN DE RETOUR / BOUTON COMMENCER
+   ---------------------------------------------------------- */
+.bcommencer {
+    flex: 0 0 auto;
+    display: inline-block;
+    margin: auto 0 0 0;
+    padding: calc(var(--k) * 1.1) calc(var(--k) * 2.4);
+    background: #000000;
+    border: 1px solid #2b2b2b;
+    border-radius: 10px;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: clamp(8px, 2 vh, 28px);
+    letter-spacing: 2px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: background-color 0.3s;
+}
+
+.bcommencer:hover {
+    background-color: #3a3a3a;
+}
+
+.bcommencer:active {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+
+/* ----------------------------------------------------------
+   7. BANNI�RE DE FIN DE BRANCHE + SCORE
+   ---------------------------------------------------------- */
+.fin-branche {
+    flex: 0 0 auto;
+    display: inline-block;
+    margin: 0 auto calc(var(--k) * 0.9) auto;
+    padding: calc(var(--k) * 1.4) 28px;
+    background: #0d0d0d;
+    border: 4px solid #232323;
+    border-radius: calc(var(--k) * 2.4);
+    font-size: clamp(9.6px, 2.4 vh, 33.6px);
+    letter-spacing: 3px;
+    color: #d9d9d9;
+}
+
+.score {
+    flex: 0 0 auto;
+    display: inline-block;
+    margin: 0 auto calc(var(--k) * 0.9) auto;
+    padding: calc(var(--k) * 1.1) 34px;
+    background: #0d0d0d;
+    border: 4px solid #232323;
+    border-radius: calc(var(--k) * 2);
+}
+
+.score .titre {
+    font-size: clamp(5.6px, 1.4 vh, 19.6px);
+    letter-spacing: 3px;
+    color: #a8a8a8;
+}
+
+.score .chiffres {
+    font-size: clamp(16px, 4 vh, 56px);
+    line-height: 1.2;
+}
+
+.score .legende {
+    font-size: clamp(6px, 1.5 vh, 21px);
+    color: #c0c0c0;
+}
+
+
+/* ----------------------------------------------------------
+   8. ADAPTATION T�L�PHONE
+   ---------------------------------------------------------- */
+@media (max-width: 700px) {
+    .heure {
+        letter-spacing: 2px;
+    }
+
+    /* Un peu de place en plus pour le texte sur t�l�phone */
+    .barre h1 {
+        font-size: clamp(13.6px, 3.4 vh, 47.6px);
+    }
+
+    .img,
+    .images .img:only-child {
+        max-width: 100%;
+        max-height: calc(var(--k) * 43);
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .img-manque,
+    .img-manque:only-child {
+        max-width: 100%;
+        height: calc(var(--k) * 28);
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .choix1 {
+        width: 92%;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .choix1 p {
+        margin: calc(var(--k) * 1.1) 0 calc(var(--k) * 0.2) 0;
+    }
+
+    /* Sur un t�l�phone, le texte fait beaucoup de lignes : on resserre
+       le titre et les choix pour que rien ne soit coup�. */
+    body.serre .barre h1 {
+        font-size: clamp(11.6px, 2.9 vh, 40.6px);
+    }
+
+    body.serre .choix1 p {
+        font-size: clamp(8px, 2 vh, 28px);
+    }
+
+    body.serre .choix1 a {
+        font-size: clamp(5.4px, 1.4 vh, 18.9px);
+    }
+
+    body.serre .bcommencer {
+        font-size: clamp(6.8px, 1.7 vh, 23.8px);
+    }
+
+    .bcommencer {
+        padding: calc(var(--k) * 0.9) calc(var(--k) * 2);
+    }
+
+    .texte .moi,
+    .texte .lui {
+        max-width: 100%;
+    }
+}
+
+/* ----------------------------------------------------------
+   9. TELEPHONE (la conversation avec Elisa)
+   ---------------------------------------------------------- */
+.phone {
+    flex: 0 1 auto;
+    width: calc(var(--k) * 34);
+    max-width: 94%;
+    margin: 0 auto calc(var(--k) * 1.2) auto;
+    padding: calc(var(--k) * 0.7);
+    background: #15171b;
+    border: calc(var(--k) * 0.35) solid #2d3138;
+    border-radius: calc(var(--k) * 3.2);
+    box-shadow: 0 10px 34px rgba(0, 0, 0, 0.85);
+    text-align: left;
+    overflow: hidden;
+}
+
+/* Le petit trait en haut de l'�cran, comme un vrai t�l�phone */
+.phone::before {
+    content: "";
+    display: block;
+    width: 34%;
+    height: calc(var(--k) * 0.35);
+    margin: 0 auto calc(var(--k) * 0.7) auto;
+    background: #2d3138;
+    border-radius: 999px;
+}
+
+.phone-barre {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0 calc(var(--k) * 0.6) calc(var(--k) * 0.7) calc(var(--k) * 0.6);
+    border-bottom: 1px solid #2d3138;
+    font-size: clamp(6px, 1.5 vh, 21px);
+}
+
+.phone-barre .nom {
+    color: #e8e8e8;
+}
+
+.phone-barre .statut {
+    font-size: clamp(4.8px, 1.2 vh, 16.8px);
+    color: #6fbf73;
+}
+
+.phone-ecran {
+    max-height: calc(var(--k) * 30);
+    overflow: hidden;
+    padding: calc(var(--k) * 0.9) calc(var(--k) * 0.5) calc(var(--k) * 0.4) calc(var(--k) * 0.5);
+    font-size: clamp(6.4px, 1.6 vh, 22.4px);
+    line-height: 1.5;
+}
+
+/* Les messages dans l'�cran */
+.phone-ecran p {
+    margin: 0 0 calc(var(--k) * 0.5) 0;
+    padding: calc(var(--k) * 0.55) calc(var(--k) * 0.9);
+    border-radius: calc(var(--k) * 1.2);
+    max-width: 86%;
+    color: #eeeeee;
+    background: #262a31;
+}
+
+.phone-ecran p.moi {
+    margin-left: auto;
+    background: #1d4b8f;
+    border-bottom-right-radius: calc(var(--k) * 0.3);
+}
+
+.phone-ecran p.lui {
+    margin-right: auto;
+    background: #262a31;
+    border-bottom-left-radius: calc(var(--k) * 0.3);
+}
+
+@media (max-width: 700px) {
+    .phone-ecran {
+        max-height: calc(var(--k) * 26);
+    }
+}
+
+
+/* ----------------------------------------------------------
+   10. SNAPCHAT � interface de messagerie de Titouan
+   Inspir� de l'app, volontairement pas copi�.
+   ---------------------------------------------------------- */
+
+/* Le fond jaune de l'app, quand on regarde l'�cran de plein pied */
+.fond-snapchat {
+    background-image: linear-gradient(160deg, #fff6b0 0%, #ffd93d 45%, #e0a80c 100%);
+}
+
+/* Le jaune est d�j� clair : on pose beaucoup moins d'ombre,
+   sinon tout vire au kaki */
+body.fond-snapchat::after {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* --- Notification qui tombe en haut de l'�cran ---------------- */
+.snap-notif {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--k) * 0.7);
+    width: calc(var(--k) * 40);
+    max-width: 92%;
+    margin: 0 auto calc(var(--k) * 0.8) auto;
+    padding: calc(var(--k) * 0.5) calc(var(--k) * 0.9);
+    background: #fffdf0;
+    border: 2px solid #e3c53a;
+    border-radius: calc(var(--k) * 1.1);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+    font-size: clamp(5.4px, 1.4 vh, 18.9px);
+    color: #1c1c1c;
+    text-align: left;
+    text-shadow: none;
+}
+
+.snap-notif .picto {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--k) * 3.4);
+    height: calc(var(--k) * 3.4);
+    background: #ffe066;
+    border-radius: calc(var(--k) * 1);
+    font-size: clamp(6.8px, 1.7 vh, 23.8px);
+}
+
+/* --- Bo�tier "t�l�phone" jaune ------------------------------- */
+/* Le bo�tier ne se comprime jamais : quand la page est trop charg�e,
+   c'est le texte qui se resserre (il a son propre d�filement) */
+.snap {
+    flex: 0 0 auto;
+    width: calc(var(--k) * 40);
+    max-width: 94%;
+    margin: 0 auto calc(var(--k) * 1) auto;
+    padding: calc(var(--k) * 0.55);
+    background: #fffcf0;
+    border: calc(var(--k) * 0.35) solid #e3c53a;
+    border-radius: calc(var(--k) * 2.6);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    text-align: left;
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* Hauteur augmentée pour permettre le texte complet des conversations Elisa */
+    max-height: calc(var(--k) * 50);
+}
+
+.snap::-webkit-scrollbar,
+.snap-fil::-webkit-scrollbar,
+.snap-liste::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+/* Le petit trait en haut, comme un vrai t�l�phone */
+.snap::before {
+    content: "";
+    display: block;
+    width: 30%;
+    height: calc(var(--k) * 0.35);
+    margin: 0 auto calc(var(--k) * 0.55) auto;
+    background: #e3c53a;
+    border-radius: 999px;
+}
+
+/* --- Barre du haut : contact + statut + actions -------------- */
+.snap-tete {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: calc(var(--k) * 0.6);
+    padding: 0 calc(var(--k) * 0.4) calc(var(--k) * 0.55) calc(var(--k) * 0.4);
+    border-bottom: 2px solid #f0e6bd;
+    font-size: clamp(6px, 1.5 vh, 21px);
+    color: #1c1c1c;
+}
+
+.snap-tete .nom {
+    font-weight: bold;
+}
+
+.snap-tete .statut {
+    flex: 1 1 auto;
+    font-size: clamp(4.6px, 1.2 vh, 16.1px);
+    color: #8a7a2a;
+    text-align: right;
+}
+
+.snap-tete .actions {
+    font-size: clamp(5.6px, 1.4 vh, 19.6px);
+    letter-spacing: calc(var(--k) * 0.3);
+    color: #a79a5e;
+}
+
+/* --- Fil de la conversation ---------------------------------- */
+/* La conversation se fait d�filer � la souris, comme dans l'app */
+.snap-fil {
+    max-height: calc(var(--k) * 26);
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding: calc(var(--k) * 0.8) calc(var(--k) * 0.4) calc(var(--k) * 0.3) calc(var(--k) * 0.4);
+    font-size: clamp(6.2px, 1.6 vh, 21.7px);
+    line-height: 1.45;
+    color: #1c1c1c;
+}
+
+.snap-msg {
+    margin: 0 0 calc(var(--k) * 0.45) 0;
+    padding: calc(var(--k) * 0.5) calc(var(--k) * 0.85);
+    max-width: 84%;
+    border-radius: calc(var(--k) * 1.1);
+    background: #ececec;
+    color: #1c1c1c;
+    text-shadow: none;
+}
+
+.snap-msg.moi {
+    margin-left: auto;
+    background: #ffe97a;
+    border-bottom-right-radius: calc(var(--k) * 0.25);
+}
+
+.snap-msg.lui {
+    margin-right: auto;
+    background: #ececec;
+    border-bottom-left-radius: calc(var(--k) * 0.25);
+}
+
+/* Un snap envoy� : la petite fl�che � c�t� */
+.snap-msg .fleche {
+    float: right;
+    margin-left: calc(var(--k) * 0.5);
+    color: #b9a53c;
+    font-size: clamp(4.8px, 1.2 vh, 16.8px);
+}
+
+.snap-msg .snap-stamp {
+    display: block;
+    margin-top: calc(var(--k) * 0.15);
+    font-size: clamp(4.2px, 1 vh, 14.7px);
+    color: #8a7a2a;
+    text-align: right;
+}
+
+/* Message laiss� en vu, ou jamais lu */
+.snap-vu {
+    margin: 0 0 calc(var(--k) * 0.45) 0;
+    font-size: clamp(4.4px, 1.1 vh, 15.4px);
+    color: #a79a5e;
+    text-align: right;
+    font-style: italic;
+}
+
+/* � Luca est en train d'�crire� � puis rien du tout */
+.snap-ecriture {
+    margin: 0 0 calc(var(--k) * 0.45) 0;
+    font-size: clamp(5.2px, 1.3 vh, 18.2px);
+    font-style: italic;
+    color: #8a8a8a;
+}
+
+/* Message supprim� */
+.snap-msg.supprime {
+    background: #e6e6e6;
+    color: #9a9a9a;
+    font-style: italic;
+}
+
+.snap-msg.erreur {
+    background: #ffd9d4;
+    color: #a3261b;
+    border: 1px dashed #e0635a;
+}
+
+.snap-alerte {
+    margin: 0 0 calc(var(--k) * 0.5) 0;
+    font-size: clamp(4.8px, 1.2 vh, 16.8px);
+    color: #e0635a;
+    text-align: center;
+}
+
+/* --- Photo floue envoy�e en snap ----------------------------- */
+.snap-capture {
+    max-width: 62%;
+    margin: 0 auto calc(var(--k) * 0.5) auto;
+    padding: calc(var(--k) * 0.35);
+    background: #fffdf2;
+    border: 2px solid #e3c53a;
+    border-radius: calc(var(--k) * 1);
+}
+
+.snap-capture .photo {
+    height: calc(var(--k) * 11);
+    border-radius: calc(var(--k) * 0.6);
+    background: linear-gradient(115deg, #9a9384 0%, #bdb5a4 45%, #7d776c 100%);
+    filter: blur(2.5px);
+}
+
+.snap-capture .legende {
+    padding: calc(var(--k) * 0.4) calc(var(--k) * 0.2) calc(var(--k) * 0.1) calc(var(--k) * 0.2);
+    font-size: clamp(6px, 1.5 vh, 21px);
+    color: #1c1c1c;
+    text-align: center;
+}
+
+/* --- Liste des conversations --------------------------------- */
+.snap-liste {
+    flex: 0 0 auto;
+    width: calc(var(--k) * 42);
+    max-width: 94%;
+    min-height: calc(var(--k) * 12);
+    max-height: calc(var(--k) * 28);
+    overflow-y: auto;
+    scrollbar-width: none;
+    margin: 0 auto calc(var(--k) * 1) auto;
+    padding: calc(var(--k) * 0.4) calc(var(--k) * 0.6);
+    background: #fffdf0;
+    border: calc(var(--k) * 0.35) solid #e3c53a;
+    border-radius: calc(var(--k) * 2.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    text-align: left;
+}
+
+.snap-ligne {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--k) * 0.8);
+    padding: calc(var(--k) * 0.45) 0;
+    border-bottom: 1px solid #f0e6bd;
+}
+
+.snap-ligne:last-child {
+    border-bottom: none;
+}
+
+.snap-ligne .col {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.snap-ligne .nom-l {
+    font-size: clamp(5.8px, 1.4 vh, 20.3px);
+    color: #1c1c1c;
+}
+
+.snap-ligne .apercu {
+    font-size: clamp(4.8px, 1.2 vh, 16.8px);
+    color: #8a7a2a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.snap-ligne .heure-l {
+    flex: 0 0 auto;
+    align-self: flex-start;
+    font-size: clamp(4.4px, 1.1 vh, 15.4px);
+    color: #a79a5e;
+}
+
+.snap-ligne.non-lu {
+    background: #fff8d9;
+}
+
+/* Pastille de messages non lus */
+.snap-compte {
+    position: relative;
+}
+
+.snap-compte .compte {
+    position: absolute;
+    top: calc(var(--k) * -0.5);
+    right: calc(var(--k) * -0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: calc(var(--k) * 2.6);
+    height: calc(var(--k) * 2.6);
+    padding: 0 calc(var(--k) * 0.3);
+    background: #ff3b30;
+    border: 2px solid #fffdf0;
+    border-radius: 999px;
+    color: #ffffff;
+    font-size: clamp(4.6px, 1.2 vh, 16.1px);
+}
+
+/* --- Avatars ronds ------------------------------------------- */
+.snap-avatar {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--k) * 5.4);
+    height: calc(var(--k) * 5.4);
+    background: #ffd93d;
+    border: 2px solid #e3c53a;
+    border-radius: 50%;
+    font-size: clamp(8.4px, 2.1 vh, 29.4px);
+}
+
+.snap-avatar.luca {
+    background: #c9e4ff;
+    border-color: #7fb3e6;
+}
+
+.snap-avatar.elisa {
+    background: #ffd0e6;
+    border-color: #e88ab8;
+}
+
+.snap-avatar.leanna {
+    background: #e6d9ff;
+    border-color: #b39ddb;
+}
+
+.snap-avatar.vide {
+    background: #3a3a3a;
+    border-color: #555555;
+}
+
+/* --- Bandeau des stories ------------------------------------- */
+.snap-story {
+    display: flex;
+    justify-content: center;
+    gap: calc(var(--k) * 1.2);
+    margin: 0 auto calc(var(--k) * 0.9) auto;
+}
+
+.snap-story .item {
+    text-align: center;
+    font-size: clamp(4.8px, 1.2 vh, 16.8px);
+    color: #efefef;
+}
+
+.snap-story .item .snap-avatar {
+    width: calc(var(--k) * 7);
+    height: calc(var(--k) * 7);
+    border: 3px solid #ffe066;
+}
+
+.snap-story .item.deja-vu .snap-avatar {
+    border-color: #9a9a9a;
+    opacity: 0.7;
+}
+
+.snap-story .item .etiquette {
+    margin-top: calc(var(--k) * 0.2);
+    color: #d8d8d8;
+}
+
+.snap-story .item.deja-vu .etiquette {
+    color: #8a8a8a;
+}
+
+/* --- Petite puce "conversation ferm�e / ouverte" ------------- */
+.snap-puce {
+    display: inline-block;
+    padding: calc(var(--k) * 0.1) calc(var(--k) * 0.6);
+    background: #f0e6bd;
+    border-radius: 999px;
+    font-size: clamp(4.6px, 1.2 vh, 16.1px);
+    color: #6c5f1c;
+    text-align: center;
+}
+
+/* Sur les pages charg�es, on serre les fils et les listes */
+body.dense .snap-fil {
+    max-height: calc(var(--k) * 20);
+    font-size: clamp(5.6px, 1.4 vh, 19.6px);
+}
+
+body.dense .snap-liste {
+    max-height: calc(var(--k) * 20);
+}
+
+body.dense .snap-capture .photo {
+    height: calc(var(--k) * 9);
+}
+
+body.serre .snap-fil {
+    max-height: calc(var(--k) * 16);
+    font-size: clamp(5.2px, 1.3 vh, 18.2px);
+}
+
+body.serre .snap-liste {
+    max-height: calc(var(--k) * 17);
+}
+
+body.serre .snap-capture .photo {
+    height: calc(var(--k) * 7);
+}
+
+body.serre .snap-tete {
+    font-size: clamp(5.2px, 1.3 vh, 18.2px);
+}
+
+@media (max-width: 700px) {
+    .snap-fil {
+        max-height: calc(var(--k) * 24);
+    }
+
+    .snap-liste {
+        max-height: calc(var(--k) * 26);
+    }
+}
+
+/* ----------------------------------------------------------
+   11. SNAPCHAT � interface de CHAT (d'apres convsnap.jpg,
+   en gardant la partie droite) : barre d'etat, en-tete du
+   groupe, fil avec les pseudos colores, reponse citee et
+   barre de saisie. C'est ce composant qu'on utilise partout
+   des qu'il y a plusieurs personnes dans la conversation.
+   ---------------------------------------------------------- */
+
+.cs {
+    flex: 0 1 auto;
+    width: calc(var(--k) * 33);
+    max-width: 94%;
+    margin: 0 auto calc(var(--k) * 1.1) auto;
+    padding: calc(var(--k) * 0.35) calc(var(--k) * 0.45) calc(var(--k) * 0.5) calc(var(--k) * 0.45);
+    background: #ffffff;
+    border: calc(var(--k) * 0.3) solid #1c1c1c;
+    border-radius: calc(var(--k) * 3);
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.65);
+    text-align: left;
+    color: #1c1c1c;
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* --- Barre d'etat : 00h19, reseau, batterie ---------------- */
+.cs-etat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: calc(var(--k) * 0.15) calc(var(--k) * 0.7) calc(var(--k) * 0.3) calc(var(--k) * 0.7);
+    font-size: clamp(5px, 1.2 vh, 17.5px);
+    font-weight: bold;
+    color: #1c1c1c;
+}
+
+.cs-etat .batterie {
+    letter-spacing: calc(var(--k) * 0.15);
+    color: #4a4a4a;
+}
+
+/* --- En-tete du groupe : visages, nom, icones --------------- */
+.cs-tete {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--k) * 0.5);
+    padding: calc(var(--k) * 0.3) calc(var(--k) * 0.6) calc(var(--k) * 0.4) calc(var(--k) * 0.6);
+    border-bottom: 1px solid #ececec;
+}
+
+.cs-tete .cs-faces {
+    display: flex;
+    flex: 0 0 auto;
+}
+
+.cs-tete .cs-faces span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--k) * 3.2);
+    height: calc(var(--k) * 3.2);
+    margin-right: calc(var(--k) * -1.1);
+    background: #ffd0e6;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    font-size: clamp(5.6px, 1.4 vh, 19.6px);
+}
+
+.cs-tete .nom-groupe {
+    flex: 1 1 auto;
+    font-size: clamp(6.8px, 1.7 vh, 23.8px);
+    font-weight: bold;
+    color: #1c1c1c;
+}
+
+.cs-tete .cs-icones {
+    flex: 0 0 auto;
+    font-size: clamp(6.4px, 1.6 vh, 22.4px);
+    color: #6b6b6b;
+    letter-spacing: calc(var(--k) * 0.25);
+}
+
+/* --- Fil de la conversation --------------------------------- */
+.cs-fil {
+    overflow: visible;
+    scrollbar-width: none;
+    padding: calc(var(--k) * 0.6) calc(var(--k) * 0.55) calc(var(--k) * 0.35) calc(var(--k) * 0.55);
+    font-size: clamp(6px, 1.5 vh, 21px);
+    line-height: 1.4;
+}
+
+.cs-jour {
+    margin: 0 0 calc(var(--k) * 0.5) 0;
+    font-size: clamp(4.4px, 1.1 vh, 15.4px);
+    letter-spacing: calc(var(--k) * 0.2);
+    color: #9a9a9a;
+    text-align: center;
+}
+
+.cs-ligne {
+    margin: 0;
+    padding: calc(var(--k) * 0.45) calc(var(--k) * 0.6);
+    background: #ffffff;
+    border-left: calc(var(--k) * 0.35) solid #dddddd;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.cs-ligne .pseudo {
+    display: block;
+    font-size: clamp(5px, 1.2 vh, 17.5px);
+    font-weight: bold;
+    letter-spacing: 0;
+    text-transform: capitalize;
+}
+
+/* Une couleur par personne, comme dans le vrai chat */
+.cs-ligne.elisa {
+    border-left-color: #d81b9a;
+}
+
+.cs-ligne.elisa .pseudo {
+    color: #d81b9a;
+}
+
+.cs-ligne.luca {
+    border-left-color: #35b03a;
+}
+
+.cs-ligne.luca .pseudo {
+    color: #35b03a;
+}
+
+.cs-ligne.leanna {
+    border-left-color: #8e44ad;
+}
+
+.cs-ligne.leanna .pseudo {
+    color: #8e44ad;
+}
+
+.cs-ligne.moi {
+    border-left-color: #2f7fe0;
+}
+
+.cs-ligne.moi .pseudo {
+    color: #2f7fe0;
+}
+
+/* Un message supprime */
+.cs-ligne.supprime {
+    color: #9a9a9a;
+    font-style: italic;
+    border-left-color: #e0e0e0;
+}
+
+.cs-ligne.supprime .pseudo {
+    color: #bdbdbd;
+}
+
+/* --- Reponse citee (le bloc gris de la capture) -------------- */
+.cs-cite {
+    margin: 0 0 calc(var(--k) * 0.5) 0;
+    padding: calc(var(--k) * 0.4) calc(var(--k) * 0.65);
+    background: #f4f4f4;
+    border-left: calc(var(--k) * 0.35) solid #bdbdbd;
+    border-radius: 0 calc(var(--k) * 0.8) calc(var(--k) * 0.8) 0;
+    font-size: clamp(5.4px, 1.4 vh, 18.9px);
+}
+
+.cs-cite .entete {
+    display: flex;
+    justify-content: space-between;
+    gap: calc(var(--k) * 0.5);
+    margin-bottom: calc(var(--k) * 0.15);
+    font-size: clamp(4.4px, 1.1 vh, 15.4px);
+    font-weight: bold;
+}
+
+.cs-cite .qui {
+    text-transform: uppercase;
+    color: #d81b9a;
+}
+
+.cs-cite .quand {
+    font-weight: normal;
+    color: #9a9a9a;
+}
+
+.cs-cite .contenu {
+    color: #555555;
+}
+
+/* � Vu par ... � */
+.cs-vu {
+    margin: 0 0 calc(var(--k) * 0.45) 0;
+    font-size: clamp(4.4px, 1.1 vh, 15.4px);
+    color: #9a9a9a;
+}
+
+/* � Elisa est en train d'ecrire... � */
+.cs-ecriture {
+    margin: 0 0 calc(var(--k) * 0.45) 0;
+    font-size: clamp(4.8px, 1.2 vh, 16.8px);
+    font-style: italic;
+    color: #8a8a8a;
+}
+
+/* --- Les membres, avec leurs pilules de nom ----------------- */
+.cs-membres {
+    display: flex;
+    gap: calc(var(--k) * 0.9);
+    padding: calc(var(--k) * 0.4) calc(var(--k) * 0.6);
+    border-top: 1px solid #f2f2f2;
+}
+
+.cs-membres .m {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--k) * 0.1);
+}
+
+.cs-membres .m .rond {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--k) * 3.4);
+    height: calc(var(--k) * 3.4);
+    background: #ffd0e6;
+    border-radius: 50%;
+    font-size: clamp(6px, 1.5 vh, 21px);
+}
+
+.cs-membres .m .pilule {
+    padding: 0 calc(var(--k) * 0.4);
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    border-radius: 999px;
+    font-size: clamp(4.2px, 1 vh, 14.7px);
+    letter-spacing: calc(var(--k) * 0.15);
+    text-transform: uppercase;
+    color: #555555;
+}
+
+/* --- Barre de saisie ---------------------------------------- */
+.cs-saisie {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--k) * 0.5);
+    padding: calc(var(--k) * 0.5) calc(var(--k) * 0.6);
+    background: #fafafa;
+    border-top: 1px solid #e8e8e8;
+}
+
+.cs-saisie .cs-btn {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--k) * 3.5);
+    height: calc(var(--k) * 3.5);
+    background: #ededed;
+    border-radius: 50%;
+    font-size: clamp(6.2px, 1.6 vh, 21.7px);
+}
+
+.cs-saisie .champ {
+    flex: 1 1 auto;
+    padding: calc(var(--k) * 0.5) calc(var(--k) * 1.2);
+    background: #f4f4f4;
+    border: 1px solid #e0e0e0;
+    border-radius: calc(var(--k) * 1.8);
+    font-size: clamp(5.2px, 1.3 vh, 18.2px);
+    color: #9a9a9a;
+}
+
+.cs-saisie .cs-btn.envoi {
+    background: #2f7fe0;
+}
+
+/* Pages chargees : on resserre */
+body.dense .cs-fil {
+    font-size: clamp(5.4px, 1.4 vh, 18.9px);
+}
+
+body.dense .cs {
+    width: calc(var(--k) * 32);
+}
+
+body.serre .cs-fil {
+    font-size: clamp(5px, 1.2 vh, 17.5px);
+}
+
+body.serre .cs {
+    width: calc(var(--k) * 31);
+}
+
+body.serre .cs-tete .nom-groupe {
+    font-size: clamp(5.8px, 1.4 vh, 20.3px);
+}
+
+body.serre .cs-membres,
+body.serre .cs-saisie {
+    padding: calc(var(--k) * 0.3) calc(var(--k) * 0.5);
+}
+
+body.serre .cs-membres .m .rond {
+    width: calc(var(--k) * 2.9);
+    height: calc(var(--k) * 2.9);
+    font-size: clamp(5.2px, 1.3 vh, 18.2px);
+}
+
+@media (max-width: 700px) {
+    .cs-fil {
+        max-height: none;
+    }
+}
+
+/* ==========================================================
+   STYLE SNAPCHAT CLAIR (fond blanc)
+   ========================================================== */
+.cs {
+    background: #ffffff;
+    border-color: #e3e3e6;
+    color: #1c1c1e;
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.cs-etat {
+    color: #1c1c1e;
+}
+
+.cs-etat .batterie {
+    color: #6e6e73;
+}
+
+.cs-tete {
+    background: #f7f7f9;
+    border-bottom: 1px solid #e5e5ea;
+}
+
+.cs-tete .nom-groupe {
+    color: #1c1c1e;
+}
+
+.cs-tete .nom-groupe::after {
+    content: "� proximit� � 16min";
+    display: block;
+    font-weight: normal;
+    font-size: clamp(4.8px, 1.2 vh, 16.8px);
+    color: #8a8a8e;
+}
+
+.cs-tete .cs-icones {
+    color: #1c1c1e;
+}
+
+.cs-tete .cs-faces span {
+    background: #ffffff;
+}
+
+.cs-fil {
+    background: #ffffff;
+}
+
+.cs-jour {
+    color: #8a8a8e;
+}
+
+.cs-ligne {
+    background: transparent;
+    border-bottom: none;
+    color: #1c1c1e;
+}
+
+.cs-ligne .pseudo {
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: clamp(5.2px, 1.3 vh, 18.2px);
+    margin-bottom: calc(var(--k) * 0.15);
+}
+
+/* Une couleur par personne, assez fonc�e pour se lire sur blanc */
+.cs-ligne.moi {
+    border-left-color: #d81b60;
+}
+
+.cs-ligne.moi .pseudo {
+    color: #d81b60;
+}
+
+.cs-ligne.elisa {
+    border-left-color: #0a72b8;
+}
+
+.cs-ligne.elisa .pseudo {
+    color: #0a72b8;
+}
+
+.cs-ligne.luca {
+    border-left-color: #1e8a2e;
+}
+
+.cs-ligne.luca .pseudo {
+    color: #1e8a2e;
+}
+
+.cs-ligne.leanna {
+    border-left-color: #8e44ad;
+}
+
+.cs-ligne.leanna .pseudo {
+    color: #8e44ad;
+}
+
+.cs-cite {
+    background: #f2f2f4;
+    border-left-color: #c9c9cd;
+}
+
+.cs-cite .contenu {
+    color: #3a3a3c;
+}
+
+.cs-cite .quand {
+    color: #8a8a8e;
+}
+
+.cs-vu,
+.cs-ecriture {
+    color: #8a8a8e;
+}
+
+.cs-membres {
+    border-top: 1px solid #e5e5ea;
+}
+
+.cs-membres .m .pilule {
+    background: #ffffff;
+    border-color: #d9d9dd;
+    color: #3a3a3c;
+}
+
+.cs-membres .m .rond {
+    background: #f2f2f4;
+}
+
+.cs-saisie {
+    background: #ffffff;
+    border-top: 1px solid #e5e5ea;
+}
+
+.cs-saisie .cs-btn {
+    background: #e5e5ea;
+    color: #1c1c1e;
+    border-radius: 50%;
+}
+
+.cs-saisie .cs-btn:first-child {
+    background: #1c1c1e;
+    color: #ffffff;
+}
+
+.cs-saisie .champ {
+    background: #f2f2f4;
+    border-color: #e0e0e4;
+    color: #8a8a8e;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cs-saisie .champ .mic {
+    color: #1c1c1e;
+}
+
+.cs-snap {
+    background: #f2f2f4;
+}
+
+.cs-snap-legende {
+    color: #3a3a3c;
+}
+
+.texte .moi,
+.texte .lui {
+    background: rgba(20, 20, 20, 0.8);
+    border-color: #3a3a3c;
+}
+
+/* ==========================================================
+   CONVERSATIONS SNAPCHAT � carte blanche dimensionn�e par son texte
+
+   Le cadre est une vraie carte : sa hauteur suit le contenu de la
+   conversation au lieu d'�tre impos�e par une capture d'�cran. Il ne
+   prend donc que la place n�cessaire, et le texte et les choix
+   en dessous restent visibles. Le plafond `max-height` emp�che la
+   carte de manger l'�cran sur les sc�nes les plus charg�es.
+   ========================================================== */
+.cs {
+    position: relative;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: calc(var(--k) * 34);
+    max-width: 94%;
+    min-width: 0;
+    min-height: calc(var(--k) * 5);
+    max-height: calc(var(--k) * 50);
+    overflow: hidden;
+    padding: 0;
+    background: #ffffff;
+    border: 1px solid #e3e3e6;
+    border-radius: calc(var(--k) * 2);
+    box-shadow: 0 calc(var(--k) * 0.8) calc(var(--k) * 2.4) rgba(0, 0, 0, 0.55);
+    text-align: left;
+}
+
+/* En-t�te : le nom du contact */
+.cs-img-nom {
+    flex: 0 0 auto;
+    padding: calc(var(--k) * 0.5) calc(var(--k) * 0.8);
+    background: #f7f7f9;
+    border-bottom: 1px solid #e5e5ea;
+    color: #1c1c1e;
+    font-weight: 700;
+    font-size: clamp(5.4px, 1.4 vh, 18.9px);
+    line-height: 1.4;
+}
+
+/* Le fil occupe toute la place restante dans la carte.
+   `min-height: auto` est indispensable : sans lui le fil se fait
+   �craser et la fin de la conversation dispara�t. */
+.cs-fil {
+    flex: 1 1 auto;
+    min-height: auto;
+    max-height: none;
+    overflow: hidden;
+    background: #ffffff;
+    padding: calc(var(--k) * 0.6) calc(var(--k) * 0.8) calc(var(--k) * 0.4) calc(var(--k) * 0.8);
+    font-size: clamp(5px, 1.2 vh, 17.5px);
+    line-height: 1.4;
+}
+
+.cs-ligne {
+    background: transparent;
+    border-bottom: none;
+    color: #1c1c1e;
+    font-size: clamp(5px, 1.2 vh, 17.5px);
+    margin: 0 0 calc(var(--k) * 0.7) 0;
+    padding: 0 0 0 calc(var(--k) * 0.9);
+}
+
+.cs-ligne .pseudo {
+    font-size: clamp(4.4px, 1.1 vh, 15.4px);
+    margin-bottom: calc(var(--k) * 0.15);
+}
+
+.cs-jour {
+    color: #8a8a8e;
+}
+
+.cs-snap {
+    background: #f2f2f4;
+}
+
+.cs-snap-legende {
+    color: #3a3a3c;
+}
+
+.cs-cite {
+    background: #f2f2f4;
+}
+
+/* ==========================================================
+   SC�NES � DEUX CONVERSATIONS (classe � chat-long �)
+
+   Ces pages encha�nent deux cartes de chat : on resserre alors la
+   conversation (police, en-t�te, espaces) pour que les deux tiennent
+   avec le texte et les trois choix, sans jamais rogner la fin.
+   ========================================================== */
+body.chat-long .cs {
+    max-height: calc(var(--k) * 56);
+}
+
+body.chat-long .cs-fil {
+    font-size: clamp(3.8px, 1 vh, 13.3px);
+}
+
+body.chat-long .cs-ligne {
+    margin-bottom: calc(var(--k) * 0.35);
+}
+
+body.chat-long .cs-ligne .pseudo {
+    font-size: clamp(3.6px, 0.9 vh, 12.6px);
+    margin-bottom: calc(var(--k) * 0.1);
+}
+
+body.chat-long .cs-jour {
+    font-size: clamp(3.6px, 0.9 vh, 12.6px);
+    margin-bottom: calc(var(--k) * 0.25);
+}
+
+body.chat-long .cs-img-nom {
+    font-size: clamp(4.6px, 1.2 vh, 16.1px);
+    padding: calc(var(--k) * 0.35) calc(var(--k) * 0.7);
+}
+
+/* On r�cup�re la place en resserrant le titre, les choix et le bouton */
+body.chat-long .barre h1 {
+    font-size: clamp(11.2px, 2.8 vh, 39.2px);
+}
+
+body.chat-long .choix1 {
+    padding: calc(var(--k) * 0.25) 12px calc(var(--k) * 0.45) 12px;
+}
+
+body.chat-long .choix1 p {
+    font-size: clamp(7.6px, 1.9 vh, 26.6px);
+    margin: calc(var(--k) * 0.2) 0 calc(var(--k) * 0.05) 0;
+}
+
+body.chat-long .choix1 a {
+    font-size: clamp(5.4px, 1.4 vh, 18.9px);
+    padding: calc(var(--k) * 0.2) 9px;
+}
+
+body.chat-long .bcommencer {
+    padding: calc(var(--k) * 0.5) calc(var(--k) * 1.8);
+    font-size: clamp(6.8px, 1.7 vh, 23.8px);
+}
+
+/* ==========================================================
+   9 ZONES DE TIR DYNAMIQUES (calcul�es � partir de la cage)
+   ========================================================== */
+/* Fonction pour d�terminer la zone vis�e (� appeler dans app.js) */
+function getGoalZone(x, y) {
+    const but = document.getElementById('but');
+    if (!but) return null;
+    
+    // Get the goal's actual position and size
+    const rect = but.getBoundingClientRect();
+    const pageX = x || event.clientX;
+    const pageY = y || event.clientY;
+    
+    // Convert to goal-relative coordinates
+    const localX = pageX - rect.left;
+    const localY = pageY - rect.top;
+    
+    // Calculate zone based on position within the goal
+    // Zones: 1=TOP_LEFT, 2=TOP_CENTER, 3=TOP_RIGHT, 4=MIDDLE_LEFT, 5=MIDDLE_CENTER, 6=MIDDLE_RIGHT, 7=BOTTOM_LEFT, 8=BOTTOM_CENTER, 9=BOTTOM_RIGHT
+    
+    const zoneWidth = rect.width / 3;
+    const zoneHeight = rect.height / 3;
+    
+    let col = 0; // 0=left, 1=center, 2=right
+    let row = 0; // 0=top, 1=middle, 2=bottom
+    
+    if (localX < zoneWidth) col = 0;
+    else if (localX > rect.width - zoneWidth) col = 2;
+    else col = 1;
+    
+    if (localY < zoneHeight) row = 0;
+    else if (localY > rect.height - zoneHeight) row = 2;
+    else row = 1;
+    
+    const zoneMap = [
+        ['TOP_LEFT', 'TOP_CENTER', 'TOP_RIGHT'],
+        ['MIDDLE_LEFT', 'MIDDLE_CENTER', 'MIDDLE_RIGHT'],
+        ['BOTTOM_LEFT', 'BOTTOM_CENTER', 'BOTTOM_RIGHT']
+    ];
+    
+    return zoneMap[row][col];
+}
+
+/* Dessine les s�parations de zones sur le but (mode debug) */
+function dessinZonesDebug() {
+    const but = document.getElementById('but');
+    if (!but || document.getElementById('zones-debug')) return;
+    
+    const rect = but.getBoundingClientRect();
+    const zoneWidth = rect.width / 3;
+    const zoneHeight = rect.height / 3;
+    
+    for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < 3; col++) {
+            const div = document.createElement('div');
+            div.className = 'zone-debug';
+            div.style.left = `${col * zoneWidth}px`;
+            div.style.top = `${row * zoneHeight}px`;
+            div.style.width = `${zoneWidth}px`;
+            div.style.height = `${zoneHeight}px`;
+            div.style.border = '1px dashed #ff0000';
+            div.style.boxSizing = 'border-box';
+            div.style.zIndex = '10';
+            but.appendChild(div);
+        }
+    }
+    
+    // Add legend
+    const legend = document.createElement('div');
+    legend.id = 'zone-legend';
+    legend.style.position = 'absolute';
+    legend.style.bottom = '10px';
+    legend.style.left = '50%';
+    legend.style.transform = 'translateX(-50%)';
+    legend.style.background = 'rgba(0,0,0,0.7)';
+    legend.style.color = '#fff';
+    legend.style.padding = '8px 12px';
+    legend.style.fontSize = '12px';
+    legend.style.borderRadius = '4px';
+    legend.innerHTML = 'Cliquez dans une zone<br>Zone cibl�e: <span id="zone-txt">AUCUNE</span>';
+    legend.style.zIndex = '10';
+    but.parentNode.appendChild(legend);
+}
+
+/* Enl�ve le mode debug */
+function enleveZonesDebug() {
+    const but = document.getElementById('but');
+    if (!but) return;
+    
+    // Enleve les divs zone-debug
+    const zones = but.querySelectorAll('.zone-debug');
+    zones.forEach(z => z.remove());
+    
+    // Enleve la l�gende
+    const legend = document.getElementById('zone-legend');
+    if (legend) legend.remove();
+}
+
+.cs-snap-photo {
+    height: calc(var(--k) * 12);
+    background: linear-gradient(115deg, #9a9384 0%, #bdb5a4 45%, #7d776c 100%);
+    border-radius: calc(var(--k) * 0.6);
+    filter: blur(2.5px);
+}
+
+.cs-snap-legende {
+    padding: calc(var(--k) * 0.4) calc(var(--k) * 0.2) calc(var(--k) * 0.1) calc(var(--k) * 0.2);
+    font-size: clamp(5.4px, 1.4 vh, 18.9px);
+    color: #1c1c1c;
+    text-align: center;
+}
+
+body.dense .cs-snap-photo {
+    height: calc(var(--k) * 10);
+}
+
+body.serre .cs-snap-photo {
+    height: calc(var(--k) * 8);
+}
+
+/* ==========================================================
+   12 LE MINI-JEU DU PENALTY
+   Utilis� par les quatre sc�nes � chapitre2-fifa-peno-*.html �.
+   Dimensionn� en --k comme le reste du livre-jeu.
+   ========================================================== */
+
+.zone-jeu {
+    flex: 0 1 auto;
+    width: calc(var(--k) * 40);
+    max-width: 98%;
+    min-height: 0;
+    margin: 0 auto calc(var(--k) * .6) auto;
+    padding: calc(var(--k) * .6);
+    background: #0d0d0d;
+    border: calc(var(--k) * .3) solid #232323;
+    border-radius: calc(var(--k) * 1.6);
+    box-shadow: 0 calc(var(--k) * .8) calc(var(--k) * 2) rgba(0, 0, 0, .7);
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+.zone-jeu .jeu-tete {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: calc(var(--k) * .6);
+    margin-bottom: calc(var(--k) * .5);
+}
+
+.zone-jeu .jeu-tete h2 {
+    margin: 0;
+    font-size: clamp(6px, 1.5 vh, 21px);
+    font-weight: 800;
+    letter-spacing: .35em;
+    text-transform: uppercase;
+    color: #eef2f6;
+}
+
+.zone-jeu .jeu-tete h2 span {
+    color: #3ddc84;
+}
+
+.zone-jeu .stats {
+    display: flex;
+    gap: calc(var(--k) * .4);
+}
+
+.zone-jeu .chip {
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 999px;
+    padding: calc(var(--k) * .18) calc(var(--k) * .6);
+    font-size: clamp(3.6px, 0.9 vh, 12.6px);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #9aa7b4;
+    white-space: nowrap;
+}
+
+.zone-jeu .chip b {
+    color: #ffffff;
+    font-size: clamp(4.6px, 1.2 vh, 16.1px);
+    margin-left: calc(var(--k) * .3);
+    font-variant-numeric: tabular-nums;
+}
+
+.zone-jeu .cadre {
+    position: relative;
+}
+
+.zone-jeu canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    /* Le terrain est en 800 x 1000 : sans ce plafond il d�borderait
+       de l'�cran sur les petits �crans. */
+    max-height: calc(var(--k) * 44);
+    /* Quand la hauteur limite, on recentre le terrain au lieu
+       de l'�tirer : le but garde ses proportions. */
+    object-fit: contain;
+    margin: 0 auto;
+    border-radius: calc(var(--k) * .9);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .08);
+    touch-action: none;
+    cursor: crosshair;
+}
+
+/* L'�cran � BUT ! / ARR�T ! / RAT� ! � au-dessus du terrain */
+.zone-jeu #over {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 34%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--k) * .7);
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(.6);
+    transition: opacity .25s, transform .35s cubic-bezier(.2, 1.6, .4, 1);
+}
+
+.zone-jeu #over.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.zone-jeu #res {
+    font-size: clamp(16.8px, 4.2 vh, 58.8px);
+    font-weight: 900;
+    letter-spacing: .06em;
+    text-shadow: 0 calc(var(--k) * .25) calc(var(--k) * 1.4) rgba(0, 0, 0, .7);
+}
+
+.zone-jeu #over.goal #res { color: #3ddc84; }
+.zone-jeu #over.save #res { color: #ffb020; }
+.zone-jeu #over.miss #res { color: #ff5d5d; }
+
+.zone-jeu #again {
+    pointer-events: auto;
+    border: 0;
+    border-radius: 999px;
+    padding: calc(var(--k) * .6) calc(var(--k) * 1.8);
+    font-family: inherit;
+    font-size: clamp(4.4px, 1.1 vh, 15.4px);
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    background: #ffffff;
+    color: #0b0f14;
+    cursor: pointer;
+}
+
+.zone-jeu #hint {
+    margin: calc(var(--k) * .55) 0 0 0;
+    text-align: center;
+    font-size: clamp(3.8px, 1 vh, 13.3px);
+    letter-spacing: .08em;
+    color: #8795a3;
+    transition: opacity .3s;
+}
+
+/* Sur les pages charg�es, on resserre encore */
+body.dense .zone-jeu {
+    width: calc(var(--k) * 37);
+    padding: calc(var(--k) * .45);
+}
+
+body.dense .zone-jeu canvas {
+    max-height: calc(var(--k) * 41);
+}
+
+body.serre .zone-jeu {
+    width: calc(var(--k) * 34);
+}
+
+body.serre .zone-jeu canvas {
+    max-height: calc(var(--k) * 38);
+}
+
+@media (max-width: 700px) {
+    .zone-jeu {
+        width: calc(var(--k) * 37);
+    }
+
+    .zone-jeu canvas {
+        max-height: calc(var(--k) * 41);
+    }
+}
+
+/* ==========================================================
+   13 LE LIEN � CONTINUER L'HISTOIRE �, SOUS LE JEU
+   Masqu� tant que le joueur n'a pas tir�.
+   ========================================================== */
+
+.suite-jeu {
+    flex: 0 0 auto;
+    display: none;
+    margin: 0 auto calc(var(--k) * .6) auto;
+    padding: calc(var(--k) * .9) calc(var(--k) * 2.2);
+    background: #0d0d0d;
+    border: 3px solid #3ddc84;
+    border-radius: 999px;
+    font-size: clamp(6.8px, 1.7 vh, 23.8px);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #3ddc84;
+    transition: background-color .3s, color .3s;
+}
+
+.suite-jeu.visible {
+    display: inline-block;
+    animation: suite-apparition .4s ease-out;
+}
+
+.suite-jeu:hover {
+    background: #3ddc84;
+    color: #0b0f14;
+}
+
+.suite-jeu:active {
+    background: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
+}
+
+@keyframes suite-apparition {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body.dense .suite-jeu {
+    font-size: clamp(6px, 1.5 vh, 21px);
+    padding: calc(var(--k) * .7) calc(var(--k) * 1.8);
+}
+
+body.fond-sommeil .img,
+body.fond-sommeil .images .img:only-child {
+    max-height: calc(var(--k) * 45);
+}
+html, body {
+    height: 100dvh;
+    overflow: hidden;
+}
+
+main {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+}
+
+body.img-x15 .img,
+body.img-x15 .images .img:only-child {
+    max-height: calc(var(--k) * 36);
+}
+/* Toutes les images x1,5 */
+body.grand .img,
+body.grand .images .img:only-child {
+    max-height: calc(var(--k) * 33);      /* 22 x 1,5 */
+}
+
+body.dense .img,
+body.dense .images .img:only-child {
+    max-height: calc(var(--k) * 36);      /* 24 x 1,5 */
+}
+
+body.serre .img,
+body.serre .images .img:only-child {
+    max-height: calc(var(--k) * 42);      /* 28 x 1,5 */
+}
+
+body.img-grande .img,
+body.img-grande .images .img:only-child {
+    max-height: calc(var(--k) * 78);      /* 52 x 1,5 */
+}
+
+/* Cartes de chat : le fil défile si la conversation est trop longue */
+.cs-fil {
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+/* Un peu plus de place pour les cartes et les fils */
+.cs {
+    max-height: calc(var(--k) * 60);
+}
+
+body.chat-long .cs {
+    max-height: calc(var(--k) * 62);
+}
+
+.snap-fil {
+    max-height: calc(var(--k) * 34);
+}
+
+body.dense .snap-fil {
+    max-height: calc(var(--k) * 28);
+}
+
+body.serre .snap-fil {
+    max-height: calc(var(--k) * 22);
+}
