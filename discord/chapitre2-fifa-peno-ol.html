@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFA — Le penalty de l'OL | LA VIE DE TITOUAN</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body class="fond-fifa dense">
+    <main>
+
+        <!-- ============ TITRE ============ -->
+        <header class="barre">
+            <h1>FIFA — Le penalty de l'OL</h1>
+        </header>
+
+        <!-- ============ TEXTE ============ -->
+        <div class="texte">
+            <p><strong>Titouan est devant le ballon.</strong></p>
+            <p>Tout le monde a quitté la surface de réparation.</p>
+            <p>C'est l'occasion de sauver l'honneur. Tout le stade retient son souffle.</p>
+            <p>Le gardien de l'équipe de Luca se place sur sa ligne et fixe Titouan.</p>
+            <p>Titouan touche le ballon trois fois pendant le match. Deux de ces touches, ce sont des corners.</p>
+            <p class="question">À toi de tirer&nbsp;: clique dans le but, à gauche, au centre ou à droite.</p>
+        </div>
+
+        <!-- ============ LE JEU ============ -->
+        <section class="zone-jeu">
+            <div class="jeu-tete">
+                <h2>Pen<span>alty</span></h2>
+                <div class="stats">
+                    <div class="chip">Buts<b id="g">0</b></div>
+                    <div class="chip">Tirs<b id="s">0</b></div>
+                </div>
+            </div>
+            <div class="cadre">
+                <canvas id="c" data-team="ol" width="800" height="1000"></canvas>
+                <div id="over">
+                    <div id="res"></div>
+                </div>
+            </div>
+            <p id="hint">Clique dans le but pour tirer</p>
+        </section>
+
+        <!-- ============ CONTINUER L'HISTOIRE ============ -->
+        <a id="suivant" class="suite-jeu" href="chapitre2-fifa-penalty-but.html">Continuer l'histoire</a>
+
+        <a class="bcommencer" href="../index.html">Retour à l'accueil</a>
+
+    </main>
+
+    <script src="penalty-jeu.js"></script>
+</body>
+</html>
