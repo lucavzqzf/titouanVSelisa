@@ -1,0 +1,881 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LA VIE DE TITOUAN â€” toutes les pages du livre-jeu</title>
+<style>
+    :root {
+        --noir: #000000;
+        --bloc: #0d0d0d;
+        --bord: #232323;
+        --gris: #d9d9d9;
+        --jaune: #ffd93d;
+        --rouge: #ff6b5e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "Bookman Old Style", "Georgia", "Times New Roman", serif;
+        color: #ffffff;
+        background: #05060a;
+        line-height: 1.5;
+    }
+
+    /* ---------- bandeau du haut ---------- */
+    .barre {
+        padding: 22px 16px;
+        background: var(--noir);
+        border-bottom: 3px solid var(--bord);
+        text-align: center;
+    }
+    .barre h1 {
+        margin: 0;
+        font-size: 30px;
+        font-weight: normal;
+        color: var(--gris);
+        letter-spacing: 2px;
+    }
+    .barre .heure {
+        margin: 6px 0 0 0;
+        font-size: 15px;
+        letter-spacing: 3px;
+        color: #c4c4c4;
+    }
+
+    .cadre {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 18px 14px 60px 14px;
+    }
+
+    /* ---------- boutons ---------- */
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin: 22px 0 8px 0;
+    }
+    button {
+        padding: 14px 22px;
+        background: var(--noir);
+        border: 2px solid var(--bord);
+        border-radius: 12px;
+        color: #ffffff;
+        font-family: inherit;
+        font-size: 17px;
+        letter-spacing: 1px;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        cursor: pointer;
+    }
+    button:hover { background: #303030; }
+    button.gros {
+        font-size: 20px;
+        padding: 18px 28px;
+        border-color: #4a4a4a;
+    }
+
+    .note {
+        max-width: 760px;
+        margin: 0 auto 26px auto;
+        padding: 12px 16px;
+        background: rgba(255, 217, 61, 0.08);
+        border: 1px dashed rgba(255, 217, 61, 0.45);
+        border-radius: 10px;
+        font-size: 15px;
+        color: #f0e6bd;
+        text-align: center;
+    }
+
+    /* ---------- sections ---------- */
+    h2.branche {
+        margin: 38px 0 6px 0;
+        padding: 12px 16px;
+        background: var(--bloc);
+        border: 2px solid var(--bord);
+        border-radius: 12px;
+        font-size: 21px;
+        font-weight: normal;
+        letter-spacing: 1px;
+        color: var(--gris);
+    }
+    h2.branche .compte {
+        float: right;
+        font-size: 15px;
+        color: #8a8a8a;
+        letter-spacing: 0;
+    }
+
+    /* ---------- une page du livre ---------- */
+    .carte {
+        margin: 10px 0;
+        padding: 14px 16px;
+        background: var(--bloc);
+        border: 1px solid var(--bord);
+        border-left: 5px solid #3a3a3a;
+        border-radius: 12px;
+    }
+    .carte.fin { border-left-color: #6d6d6d; }
+    .carte.orpheline { border-left-color: var(--rouge); }
+    .carte.jeu { border-left-color: var(--jaune); }
+
+    .carte .entete {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 8px;
+    }
+    .carte .num {
+        font-size: 13px;
+        color: #7a7a7a;
+        min-width: 26px;
+    }
+    .carte .titre {
+        font-size: 18px;
+        color: #ffffff;
+    }
+    .carte .titre a { color: #ffffff; }
+    .carte .heure {
+        margin-left: auto;
+        font-size: 13px;
+        letter-spacing: 2px;
+        color: #a8a8a8;
+        white-space: nowrap;
+    }
+    .carte .fichier {
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 12px;
+        color: #7f8fa6;
+        word-break: break-all;
+    }
+    .carte .texte {
+        margin: 8px 0 10px 0;
+        font-size: 15px;
+        color: #cfcfcf;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 1px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 1px;
+        vertical-align: middle;
+    }
+    .badge.fin { background: #2a2a2a; color: #bdbdbd; }
+    .badge.jeu { background: #4a3f10; color: #ffe066; }
+    .badge.alerte { background: #4a1f1a; color: #ffb3ab; }
+
+    /* ---------- liens vers les autres pages ---------- */
+    .liens {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+        font-size: 14px;
+        color: #8a8a8a;
+    }
+    .liens .etiquette { margin-right: 2px; }
+    .liens a {
+        display: inline-block;
+        padding: 3px 10px;
+        background: #141414;
+        border: 1px solid #2e2e2e;
+        border-radius: 999px;
+        color: #e6e6e6;
+        font-size: 13px;
+        text-decoration: none;
+    }
+    .liens a:hover { background: #303030; text-decoration: underline; }
+    .liens a.retour { color: #9a9a9a; }
+
+    /* ---------- mode lecture ---------- */
+    #lecture { display: none; margin-top: 10px; }
+    #lecture.visible { display: block; }
+    .page-lecture {
+        margin: 0 0 14px 0;
+        border: 1px solid var(--bord);
+        border-radius: 12px;
+        overflow: hidden;
+        background: #000;
+    }
+    .page-lecture .bandeau {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        background: #101010;
+        border-bottom: 1px solid var(--bord);
+        font-size: 14px;
+        color: #bdbdbd;
+    }
+    .page-lecture .bandeau a {
+        color: #ffd93d;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+    .page-lecture iframe {
+        display: block;
+        width: 100%;
+        height: 78vh;
+        border: 0;
+        background: #000;
+    }
+
+    .retour-accueil {
+        display: inline-block;
+        margin-top: 34px;
+        padding: 12px 22px;
+        background: var(--noir);
+        border: 1px solid #2b2b2b;
+        border-radius: 10px;
+        color: #ffffff;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+    }
+    .retour-accueil:hover { background: #3a3a3a; }
+
+    @media (max-width: 700px) {
+        .barre h1 { font-size: 22px; }
+        .carte .heure { margin-left: 0; }
+        .page-lecture iframe { height: 70vh; }
+    }
+</style>
+</head>
+<body class="grand"
+
+<header class="barre">
+    <h1>LA VIE DE TITOUAN</h1>
+    <p class="heure">TOUTES LES PAGES DU LIVRE-JEU</p>
+</header>
+
+<div class="cadre">
+
+    <div class="actions">
+        <button class="gros" onclick="ouvrirTout()">&#9654; Ouvrir les 47 pages</button>
+        <button onclick="basculerLecture()">&#128214; Tout lire sur une page</button>
+    </div>
+
+    <p class="note">
+        Le livre-jeu compte <strong>47 pages</strong> (une page = une sc&egrave;ne).
+        Si ton navigateur bloque les fen&ecirc;tres, autorise les pop-ups pour ce site,
+        puis reclique sur le bouton.
+    </p>
+
+    <div id="lecture"></div>
+
+    <noscript><p class="note">Le JavaScript est d&eacute;sactiv&eacute; : les liens de chaque page restent cliquables ci-dessous.</p></noscript>
+
+    <div id="sommaire"></div>
+
+    <p style="text-align:center">
+        <a class="retour-accueil" href="index.html">&#8592; Retour &agrave; l'accueil du livre</a>
+    </p>
+
+</div>
+
+<script>
+/* ============================================================
+   Les 47 pages du livre, rangÃ©es par branche.
+   "url"   : le fichier, relatif Ã  la racine du livre
+   "heure" : l'heure affichÃ©e dans la barre noire de la page
+   "liens" : les choix proposÃ©s en bas de la page
+   ============================================================ */
+var BRANCHES = [
+{
+    nom: "Le d&eacute;but de la soir&eacute;e",
+    pages: [
+        {
+            url: "index.html",
+            titre: "LA VIE DE TITOUAN",
+            heure: "23h47",
+            texte: "Titouan pensait passer une soir&eacute;e tranquille. Il avait tort.",
+            liens: [["Commencer", "transition.html"]]
+        },
+        {
+            url: "transition.html",
+            titre: "Bande-annonce &mdash; Mission Conqu&ecirc;te",
+            heure: "",
+            texte: "Avant de commencer l'aventure, regarde la bande-annonce.",
+            liens: [["Commencer l'aventure", "chapitre1.html"]]
+        },
+        {
+            url: "chapitre1.html",
+            titre: "Chapitre 1 &mdash; Une soir&eacute;e normale",
+            heure: "23h47",
+            texte: "Titouan est dans sa chambre, allong&eacute; sur son lit avec son t&eacute;l&eacute;phone. Il est fatigu&eacute;, mais il n'a absolument pas envie de dormir.",
+            liens: [
+                ["Choix 1 &mdash; Descendre &agrave; la cuisine", "cuisine/chapitre2-cuisine.html"],
+                ["Choix 2 &mdash; Ouvrir Discord", "discord/chapitre2-discord.html"],
+                ["Choix 3 &mdash; &Eacute;crire &agrave; Elisa", "elisa/chapitre2-elisa.html"]
+            ]
+        },
+        {
+            url: "chapitre2-chambre.html",
+            titre: "De retour dans sa chambre",
+            heure: "23h52",
+            texte: "Titouan regarde une derni&egrave;re fois le frigo. Il d&eacute;cide finalement de ne rien prendre et retourne s'allonger sur son lit.",
+            liens: [
+                ["Ouvrir Discord", "discord/chapitre2-discord.html"],
+                ["Lancer FIFA", "discord/chapitre2-fifa.html"],
+                ["&Eacute;crire &agrave; Elisa", "elisa/chapitre2-elisa.html"]
+            ]
+        }
+    ]
+},
+{
+    nom: "Branche cuisine &mdash; le frigo de la mort",
+    pages: [
+        {
+            url: "cuisine/chapitre2-cuisine.html",
+            titre: "Le frigo de la mort",
+            heure: "23h50",
+            texte: "Titouan ouvre le frigo et trouve deux choses : un yaourt p&eacute;rim&eacute; depuis 3 jours, et un vieux plateau de tapas avec des mouches autour.",
+            liens: [
+                ["Prendre le yaourt", "chapitre2-yaourt.html"],
+                ["Prendre les tapas", "chapitre2-tapas.html"],
+                ["Ne rien prendre", "../chapitre2-chambre.html"]
+            ]
+        },
+        {
+            url: "cuisine/chapitre2-yaourt.html",
+            titre: "Le yaourt",
+            heure: "23h51",
+            texte: "&laquo;&nbsp;&Ccedil;a devrait aller.&nbsp;&raquo; Il mange le yaourt en remontant dans sa chambre, puis s'assoit sur son lit.",
+            liens: [
+                ["Ouvrir Discord", "../discord/chapitre2-discord.html"],
+                ["&Eacute;crire &agrave; Elisa", "../elisa/chapitre2-elisa.html"],
+                ["Rester dans sa chambre", "../chapitre2-chambre.html"]
+            ]
+        },
+        {
+            url: "cuisine/chapitre2-tapas.html",
+            titre: "Les tapas",
+            heure: "23h53",
+            texte: "&Agrave; peine les a-t-il mang&eacute;es qu'il se sent tr&egrave;s mal. Il court aux toilettes. Il d&eacute;cide d'aller dormir.",
+            liens: [
+                ["Aller dormir", "chapitre2-fin-tapas.html"],
+                ["Ouvrir Discord", "../discord/chapitre2-discord.html"]
+            ]
+        },
+        {
+            url: "cuisine/chapitre2-fin-tapas.html",
+            titre: "Fin &mdash; Les tapas",
+            heure: "",
+            texte: "&laquo;&nbsp;Le frigo de la mort a gagn&eacute;.&nbsp;&raquo; La soir&eacute;e est finie avant d'avoir vraiment commenc&eacute;.",
+            fin: true
+        }
+    ]
+},
+{
+    nom: "Branche Discord &mdash; Rocket League, FIFA, Minecraft",
+    pages: [
+        {
+            url: "discord/chapitre2-discord.html",
+            titre: "Le Discord de la classe",
+            heure: "23h50",
+            texte: "Titouan entre dans le vocal. Luca lui demande : &laquo;&nbsp;Alors Titouan, on fait quoi ce soir&nbsp;?&nbsp;&raquo;",
+            liens: [
+                ["Rocket League", "chapitre2-rocket-league.html"],
+                ["FIFA", "chapitre2-fifa.html"],
+                ["Minecraft", "chapitre2-minecraft.html"]
+            ]
+        },
+        {
+            url: "discord/chapitre2-rocket-league.html",
+            titre: "Rocket League &mdash; La d&eacute;faite",
+            heure: "00h22",
+            texte: "Cinq minutes plus tard, le score est sans appel : 12 &ndash; 0 pour Luca. Titouan est compl&egrave;tement d&eacute;truit.",
+            liens: [
+                ["La revanche", "chapitre2-rocket-revanche.html"],
+                ["FIFA", "chapitre2-fifa.html"],
+                ["Minecraft", "chapitre2-minecraft.html"]
+            ]
+        },
+        {
+            url: "discord/chapitre2-rocket-revanche.html",
+            titre: "Rocket League &mdash; La revanche (ou pas)",
+            heure: "",
+            texte: "&laquo;&nbsp;On en refait une&nbsp;?&nbsp;&raquo; &mdash; &laquo;&nbsp;En fait&hellip; je vais dormir.&nbsp;&raquo;",
+            fin: true
+        },
+        {
+            url: "discord/chapitre2-fifa.html",
+            titre: "FIFA &mdash; Le choix de l'&eacute;quipe",
+            heure: "00h03",
+            texte: "Si Titouan prend une &eacute;quipe, Luca prend automatiquement l'autre. Quelle &eacute;quipe choisir&nbsp;?",
+            liens: [
+                ["Real Madrid", "chapitre2-fifa-real-madrid.html"],
+                ["Bayern Munich", "chapitre2-fifa-bayern.html"],
+                ["Chelsea f&eacute;minin", "chapitre2-fifa-chelsea.html"],
+                ["OL f&eacute;minin", "chapitre2-fifa-ol.html"]
+            ]
+        },
+        {
+            url: "discord/chapitre2-fifa-real-madrid.html",
+            titre: "FIFA &mdash; Real Madrid contre Bayern",
+            heure: "00h04",
+            texte: "Tacle par derri&egrave;re de Luca&nbsp;: P&Eacute;NALTY&nbsp;! Pendant ce temps, Luca a d&eacute;j&agrave; marqu&eacute; deux fois.",
+            liens: [["Le penalty de Mbapp&eacute;", "chapitre2-fifa-peno-real-madrid.html"]]
+        },
+        {
+            url: "discord/chapitre2-fifa-bayern.html",
+            titre: "FIFA &mdash; Bayern contre Real Madrid",
+            heure: "00h04",
+            texte: "Titouan choisit le Bayern Munich, pour impressionner. M&ecirc;me sanction : P&Eacute;NALTY&nbsp;!",
+            liens: [["Le penalty du Bayern", "chapitre2-fifa-peno-bayern.html"]]
+        },
+        {
+            url: "discord/chapitre2-fifa-chelsea.html",
+            titre: "FIFA &mdash; Chelsea f&eacute;minin contre OL f&eacute;minin",
+            heure: "00h04",
+            texte: "Titouan tente quelque chose de nouveau avec le Chelsea f&eacute;minin. P&Eacute;NALTY&nbsp;!",
+            liens: [["Le penalty de Lauren James", "chapitre2-fifa-peno-chelsea.html"]]
+        },
+        {
+            url: "discord/chapitre2-fifa-ol.html",
+            titre: "FIFA &mdash; OL f&eacute;minin contre Chelsea f&eacute;minin",
+            heure: "00h04",
+            texte: "Titouan choisit l'OL f&eacute;minin au hasard, parce qu'il a vu le logo en premier. P&Eacute;NALTY&nbsp;!",
+            liens: [["Le penalty de l'OL", "chapitre2-fifa-peno-ol.html"]]
+        },
+        {
+            url: "discord/chapitre2-fifa-peno-real-madrid.html",
+            titre: "FIFA &mdash; Le penalty de Mbapp&eacute;",
+            heure: "00h12",
+            texte: "Mini-jeu : &agrave; toi de tirer, clique dans le but, &agrave; gauche, au centre ou &agrave; droite.",
+            jeu: true,
+            liens: [["Tirer", "chapitre2-fifa-penalty-but.html"]]
+        },
+        {
+            url: "discord/chapitre2-fifa-peno-bayern.html",
+            titre: "FIFA &mdash; Le penalty du Bayern",
+            heure: "00h12",
+            texte: "Mini-jeu : &agrave; toi de tirer, clique dans le but, &agrave; gauche, au centre ou &agrave; droite.",
+            jeu: true,
+            liens: [["Tirer", "chapitre2-fifa-penalty-but.html"]]
+        },
+        {
+            url: "discord/chapitre2-fifa-peno-chelsea.html",
+            titre: "FIFA &mdash; Le penalty de Lauren James",
+            heure: "00h12",
+            texte: "Mini-jeu : &agrave; toi de tirer, clique dans le but, &agrave; gauche, au centre ou &agrave; droite.",
+            jeu: true,
+            liens: [["Tirer", "chapitre2-fifa-penalty-but.html"]]
+        },
+        {
+            url: "discord/chapitre2-fifa-peno-ol.html",
+            titre: "FIFA &mdash; Le penalty de l'OL",
+            heure: "00h12",
+            texte: "Mini-jeu : &agrave; toi de tirer, clique dans le but, &agrave; gauche, au centre ou &agrave; droite.",
+            jeu: true,
+            liens: [["Tirer", "chapitre2-fifa-penalty-but.html"]]
+        },
+        {
+            url: "discord/chapitre2-fifa-penalty-but.html",
+            titre: "FIFA &mdash; Tu marques&nbsp;!",
+            heure: "00h13",
+            texte: "BUT DE TITOUAN&nbsp;! Le gardien s'est tromp&eacute; de c&ocirc;t&eacute;. Score final : 11 &ndash; 1.",
+            liens: [
+                ["Minecraft", "chapitre2-minecraft.html"],
+                ["Aller dormir", "../chapitre2-sommeil.html"],
+                ["&Eacute;crire &agrave; Elisa", "../elisa/chapitre2-elisa.html"]
+            ]
+        },
+        {
+            url: "discord/chapitre2-fifa-penalty-rate.html",
+            titre: "FIFA &mdash; Arr&ecirc;t du gardien",
+            heure: "00h13",
+            texte: "ARR&Ecirc;T DU GARDIEN. Le gardien a bien lu le tir. Score final : 11 &ndash; 0. &Eacute;videmment qu'il n'a rien marqu&eacute;.",
+            liens: [
+                ["Minecraft", "chapitre2-minecraft.html"],
+                ["Aller dormir", "../chapitre2-sommeil.html"],
+                ["&Eacute;crire &agrave; Elisa", "../elisa/chapitre2-elisa.html"]
+            ]
+        },
+        {
+            url: "discord/chapitre2-fifa-penalty.html",
+            titre: "FIFA &mdash; Le penalty",
+            heure: "00h12",
+            texte: "Titouan est devant le ballon. Il tire avec quelle &eacute;quipe&nbsp;?",
+            liens: [
+                ["Mbapp&eacute;", "chapitre2-fifa-peno-real-madrid.html"],
+                ["Bayern", "chapitre2-fifa-peno-bayern.html"],
+                ["Lauren James", "chapitre2-fifa-peno-chelsea.html"],
+                ["OL", "chapitre2-fifa-peno-ol.html"]
+            ]
+        },
+        {
+            url: "discord/chapitre2-fifa-luca.html",
+            titre: "FIFA &mdash; Luca s'&eacute;nerve",
+            heure: "00h40",
+            texte: "Le penalty est pass&eacute;. Luca explose, accuse l'arbitre de favoritisme, puis Titouan de tricher.",
+            liens: [
+                ["Tous les buts", "chapitre2-fifa-buts.html"],
+                ["La manette cass&eacute;e", "chapitre2-fifa-fin.html"]
+            ]
+        },
+        {
+            url: "discord/chapitre2-fifa-buts.html",
+            titre: "FIFA &mdash; Tous les buts",
+            heure: "00h45",
+            texte: "Onze buts en tout. Luca marque tout. Titouan touche le ballon trois fois, dont deux corners.",
+            liens: [["La manette cass&eacute;e", "chapitre2-fifa-fin.html"]]
+        },
+        {
+            url: "discord/chapitre2-fifa-fin.html",
+            titre: "FIFA &mdash; La manette cass&eacute;e",
+            heure: "00h47",
+            texte: "CRAC. La manette &eacute;clate en deux morceaux dans ses mains. Sa soir&eacute;e FIFA est termin&eacute;e.",
+            fin: true
+        },
+        {
+            url: "discord/chapitre2-minecraft.html",
+            titre: "Minecraft &mdash; Le serveur de la classe",
+            heure: "00h05",
+            texte: "Un Ghast appara&icirc;t. Arthor le tue du premier coup, puis tue Titouan dans la partie. Tout devient absurde.",
+            liens: [
+                ["&Eacute;crire &agrave; Elisa", "../elisa/chapitre2-elisa.html"],
+                ["Aller dormir", "../chapitre2-sommeil.html"]
+            ]
+        }
+    ]
+},
+{
+    nom: "Branche Elisa &mdash; TikTok, Snapchat, le rendez-vous",
+    pages: [
+        {
+            url: "elisa/chapitre2-elisa.html",
+            titre: "Elisa &mdash; Le premier message",
+            heure: "23h53",
+            texte: "Il pense &agrave; Elisa, tr&egrave;s populaire sur TikTok (130&nbsp;000 abonn&eacute;s). Il ouvre le chat de groupe. Il tape. Il efface.",
+            liens: [
+                ["Ouvrir son TikTok", "chapitre2-elisa-tiktok.html"],
+                ["Question al&eacute;atoire", "chapitre2-elisa-question.html"],
+                ["Envoyer une vid&eacute;o phonk", "chapitre2-elisa-phonk.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-elisa-tiktok.html",
+            titre: "Elisa &mdash; 130&nbsp;000 abonn&eacute;s",
+            heure: "00h02",
+            texte: "Il regarde trois vid&eacute;os d'affil&eacute;e. Il en like une par hasard. Douze minutes avant qu'elle r&eacute;ponde.",
+            liens: [
+                ["Lu, pas r&eacute;pondu", "chapitre2-elisa-attente.html"],
+                ["Les jeux", "chapitre2-elisa-jeux.html"],
+                ["Le phonk", "chapitre2-elisa-phonk.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-elisa-question.html",
+            titre: "Elisa &mdash; La question al&eacute;atoire",
+            heure: "00h07",
+            texte: "Il &eacute;crit sans r&eacute;fl&eacute;chir et envoie une question qu'il regrettera tout de suite.",
+            liens: [
+                ["Les jeux", "chapitre2-elisa-jeux.html"],
+                ["Le phonk", "chapitre2-elisa-phonk.html"],
+                ["Lu, pas r&eacute;pondu", "chapitre2-elisa-attente.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-elisa-phonk.html",
+            titre: "Elisa &mdash; Le p&egrave;re qui danse sur du phonk",
+            heure: "00h26",
+            texte: "Un p&egrave;re de 55 ans, en jogging, qui danse sur du phonk dans son salon. Il l'envoie sans r&eacute;fl&eacute;chir.",
+            liens: [
+                ["Le rendez-vous", "chapitre2-elisa-rdv.html"],
+                ["Les jeux", "chapitre2-elisa-jeux.html"],
+                ["Lu, pas r&eacute;pondu", "chapitre2-elisa-attente.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-elisa-jeux.html",
+            titre: "Elisa &mdash; Les jeux",
+            heure: "00h18",
+            texte: "Titouan retrouve un terrain o&ugrave; ils s'entendent : les jeux (Brawl Stars / Clash Royale).",
+            liens: [
+                ["Le rendez-vous", "chapitre2-elisa-rdv.html"],
+                ["Le phonk", "chapitre2-elisa-phonk.html"],
+                ["Lu, pas r&eacute;pondu", "chapitre2-elisa-attente.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-elisa-attente.html",
+            titre: "Elisa &mdash; Lu, pas r&eacute;pondu",
+            heure: "00h12",
+            texte: "Titouan envoie un message. Puis un autre. Puis un autre.",
+            liens: [
+                ["Le phonk", "chapitre2-elisa-phonk.html"],
+                ["Le rendez-vous", "chapitre2-elisa-rdv.html"],
+                ["Aller dormir", "../chapitre2-sommeil.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-elisa-rdv.html",
+            titre: "Elisa &mdash; Le rendez-vous",
+            heure: "00h38",
+            texte: "Il envoie, et aussit&ocirc;t il regrette. Trop tard, c'est parti.",
+            liens: [
+                ["Elle n'est pas venue", "chapitre2-elisa-annule.html"],
+                ["Snapchat", "chapitre2-snapchat.html"],
+                ["Aller dormir", "../chapitre2-sommeil.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-elisa-annule.html",
+            titre: "Elisa &mdash; Elle n'est pas venue",
+            heure: "17h42",
+            texte: "Titouan est plant&eacute; devant le cin&eacute;ma depuis vingt minutes. Il a chang&eacute; de pull. Deux fois. Enfin un message arrive.",
+            liens: [
+                ["On continue &agrave; parler", "chapitre2-elisa-apres.html"],
+                ["Le Discord", "../discord/chapitre2-discord.html"],
+                ["Aller dormir", "../chapitre2-sommeil.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-elisa-apres.html",
+            titre: "Elisa &mdash; On continue &agrave; parler",
+            heure: "18h05",
+            texte: "Elle raconte son p&egrave;re, ses vid&eacute;os, L&eacute;andro. La conversation repart.",
+            liens: [
+                ["Fin &mdash; Elisa", "chapitre2-elisa-fin.html"],
+                ["Snapchat", "chapitre2-snapchat.html"],
+                ["Aller dormir", "../chapitre2-sommeil.html"],
+                ["Le cin&eacute;ma", "chapitre2-cinema.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-elisa-fin.html",
+            titre: "Fin &mdash; Elisa",
+            heure: "",
+            texte: "Titouan propose un autre rendez-vous, la semaine prochaine.",
+            fin: true
+        },
+        {
+            url: "elisa/chapitre2-cinema.html",
+            titre: "Le cin&eacute;ma, c'est mort",
+            heure: "23h55",
+            texte: "Luca a propos&eacute; le cin&eacute;ma. Tout le monde a r&eacute;pondu &laquo;&nbsp;non&nbsp;&raquo;.",
+            liens: [
+                ["Sortir pour le 2v2", "chapitre2-2v2.html"],
+                ["Snapchat", "chapitre2-snapchat.html"],
+                ["Aller dormir", "../chapitre2-sommeil.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-2v2.html",
+            titre: "Personne pour le 2v2",
+            heure: "00h02",
+            texte: "Elisa, Luca et L&eacute;anna sont plant&eacute;s devant un cin&eacute;ma ferm&eacute;, &agrave; ne rien faire. Le gag : le 2v2 ne peut m&ecirc;me pas commencer.",
+            liens: [
+                ["Demander conseil", "chapitre2-conseils.html"],
+                ["Message &agrave; Luca", "chapitre2-snapchat.html"],
+                ["Aller dormir", "../chapitre2-sommeil.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-snapchat.html",
+            titre: "Fr&egrave;re je fais quoi maintenant",
+            heure: "00h19",
+            texte: "Quatre conversations non lues. Il les ignore et ouvre celle de Luca.",
+            liens: [
+                ["Le snap &laquo;&nbsp;courage&nbsp;&raquo;", "chapitre2-snapchat-2.html"],
+                ["Demander conseil", "chapitre2-conseils.html"],
+                ["Aller dormir", "../chapitre2-sommeil.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-snapchat-2.html",
+            titre: "Le snap &laquo;&nbsp;courage&nbsp;&raquo;",
+            heure: "00h19",
+            texte: "Luca r&eacute;pond, mais seulement pour dire qu'il n'a rien.",
+            liens: [
+                ["Demander conseil", "chapitre2-conseils.html"],
+                ["Snapchat", "chapitre2-snapchat.html"],
+                ["Aller dormir", "../chapitre2-sommeil.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-conseils.html",
+            titre: "Le mauvais conseiller officiel",
+            heure: "00h26",
+            texte: "Titouan &eacute;crit pendant trente secondes. Il relit. Il supprime tout.",
+            liens: [
+                ["Scooby-Doo", "chapitre2-conseils-2.html"],
+                ["La ch&egrave;vre", "chapitre2-conseils-chevre.html"],
+                ["Aller dormir", "../chapitre2-sommeil.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-conseils-2.html",
+            titre: "Scooby-Doo, mais en plus grand",
+            heure: "00h34",
+            texte: "Il pose la question proprement, avec un point &agrave; la fin.",
+            liens: [
+                ["Le mauvais conseiller", "chapitre2-conseils.html"],
+                ["Le Discord", "../discord/chapitre2-discord.html"],
+                ["Aller dormir", "../chapitre2-sommeil.html"]
+            ]
+        },
+        {
+            url: "elisa/chapitre2-conseils-chevre.html",
+            titre: "Titouan a achet&eacute; une ch&egrave;vre",
+            heure: "03h41",
+            texte: "Titouan a suivi le conseil. &Agrave; la lettre. Il est 03h41 et il cherche encore une ch&egrave;vre dans le quartier.",
+            liens: [
+                ["Scooby-Doo", "chapitre2-conseils-2.html"],
+                ["Aller dormir", "../chapitre2-sommeil.html"]
+            ]
+        }
+    ]
+},
+{
+    nom: "Fin de soir&eacute;e et pages techniques",
+    pages: [
+        {
+            url: "chapitre2-sommeil.html",
+            titre: "Fin &mdash; Aller dormir",
+            heure: "00h35",
+            texte: "Il ferme Minecraft, ferme Discord, et pose son t&eacute;l&eacute;phone. Pour la premi&egrave;re fois de la soir&eacute;e, il ne cherche plus &agrave; quoi faire.",
+            fin: true
+        },
+        {
+            url: "chapitre2.html",
+            titre: "Page d&eacute;plac&eacute;e (ancienne redirection)",
+            heure: "",
+            texte: "Ancienne page qui redirige vers la cuisine. Aucun choix.",
+            liens: [["Aller &agrave; la cuisine", "cuisine/chapitre2-cuisine.html"]],
+            orpheline: true
+        },
+        {
+            url: "chapitre2-fifa.html",
+            titre: "Ancienne page FIFA (racine, vide)",
+            heure: "",
+            texte: "Reste de l'ancienne version du livre, avant le dossier discord/. Aucun choix.",
+            orpheline: true
+        }
+    ]
+}
+];
+
+/* Pages qui ne sont li&eacute;es par aucune autre page du livre */
+var ORPHELINES = [
+    "discord/chapitre2-fifa-luca.html",
+    "discord/chapitre2-fifa-penalty.html",
+    "discord/chapitre2-fifa-penalty-rate.html",
+    "chapitre2.html",
+    "chapitre2-fifa.html"
+];
+
+/* ---------- construction du sommaire ---------- */
+function echapper(t) {
+    return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function rendreCarte(p, num) {
+    var classes = "carte";
+    if (p.fin) classes += " fin";
+    if (p.jeu) classes += " jeu";
+    if (p.orpheline) classes += " orpheline";
+
+    var html = '<article class="' + classes + '">';
+    html += '<div class="entete">';
+    html += '<span class="num">' + num + '.</span>';
+    html += '<span class="titre"><a href="' + p.url + '">' + p.titre + '</a></span>';
+    if (p.heure) html += '<span class="heure">' + p.heure + '</span>';
+    html += '</div>';
+    html += '<div class="fichier">' + echapper(p.url) + '</div>';
+
+    html += '<div style="margin-top:6px">';
+    if (p.fin) html += '<span class="badge fin">FIN DE BRANCHE</span> ';
+    if (p.jeu) html += '<span class="badge jeu">MINI-JEU</span> ';
+    if (p.orpheline) html += '<span class="badge alerte">PAGE NON LI&Eacute;E</span>';
+    html += '</div>';
+
+    if (p.texte) html += '<p class="texte">' + p.texte + '</p>';
+
+    if (p.liens && p.liens.length) {
+        html += '<div class="liens"><span class="etiquette">Vers :</span>';
+        for (var i = 0; i < p.liens.length; i++) {
+            html += '<a href="' + p.liens[i][1] + '">' + echapper(p.liens[i][0]) + '</a> ';
+        }
+        html += '</div>';
+    } else {
+        html += '<div class="liens"><span class="etiquette">Aucun lien vers la suite (page de fin).</span></div>';
+    }
+
+    html += '</article>';
+    return html;
+}
+
+var toutesLesPages = [];
+
+function construire() {
+    var conteneur = document.getElementById("sommaire");
+    var html = "";
+    var num = 1;
+
+    for (var b = 0; b < BRANCHES.length; b++) {
+        var branche = BRANCHES[b];
+        html += '<h2 class="branche">' + branche.nom +
+                '<span class="compte">' + branche.pages.length + ' pages</span></h2>';
+        for (var i = 0; i < branche.pages.length; i++) {
+            html += rendreCarte(branche.pages[i], num++);
+            toutesLesPages.push(branche.pages[i].url);
+        }
+    }
+
+    html += '<h2 class="branche">Pages &agrave; v&eacute;rifier' +
+            '<span class="compte">' + ORPHELINES.length + ' pages</span></h2>';
+    html += '<p class="note">Ces pages existent mais aucune autre page du livre n'y m&egrave;ne. ' +
+            'Elles ne sont donc pas atteignables en jouant&nbsp;: soit il manque un lien, ' +
+            'soit ce sont des restes de l\'ancienne version.</p>';
+
+    conteneur.innerHTML = html;
+}
+
+/* ---------- ouvrir toutes les pages ---------- */
+function ouvrirTout() {
+    for (var i = 0; i < toutesLesPages.length; i++) {
+        var f = function (url) {
+            return function () { window.open(url, "_blank"); };
+        }(toutesLesPages[i]);
+        setTimeout(f, i * 60);
+    }
+}
+
+/* ---------- mode lecture : tout le livre sur une page ---------- */
+var lecturePrete = false;
+
+function basculerLecture() {
+    var zone = document.getElementById("lecture");
+    if (!lecturePrete) {
+        var html = "";
+        for (var i = 0; i < BRANCHES.length; i++) {
+            for (var j = 0; j < BRANCHES[i].pages.length; j++) {
+                var p = BRANCHES[i].pages[j];
+                html += '<div class="page-lecture">';
+                html += '<div class="bandeau"><span>' + p.titre + '</span>' +
+                        '<a href="' + p.url + '">ouvrir seule &#8599;</a></div>';
+                html += '<iframe src="' + p.url + '" title="' + p.titre + '" loading="lazy"></iframe>';
+                html += '</div>';
+            }
+        }
+        zone.innerHTML = html;
+        lecturePrete = true;
+    }
+    zone.classList.toggle("visible");
+}
+
+construire();
+</script>
+
+</body>
+</html>
+

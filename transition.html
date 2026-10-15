@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bande-annonce — LA VIE DE TITOUAN</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* La vidéo de transition, centrée, avec une bordure comme les images */
+        .video-transition {
+            flex: 1 0 auto;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 calc(var(--k) * 1.5);
+            margin: 0 0 calc(var(--k) * 1) 0;
+        }
+
+        .video-transition video {
+            width: 100%;
+            max-height: calc(var(--k) * 45);
+            border: 3px solid #1c1c1c;
+            border-radius: 6px;
+            box-shadow: 0 6px 26px rgba(0, 0, 0, 0.75);
+            background: #000000;
+        }
+
+        /* Le bouton "Continuer" reste visible même avant la fin de la vidéo */
+        #continuer {
+            margin-bottom: calc(var(--k) * 1.5);
+        }
+    </style>
+</head>
+<body class="fond-debut">
+    <main>
+
+        <!-- ============ TITRE ============ -->
+        <header class="barre">
+            <h1>Titouan et Elisa — Mission Conquête</h1>
+            <p class="heure">La bande-annonce</p>
+        </header>
+
+        <!-- ============ TEXTE ============ -->
+        <div class="texte">
+            <p>Avant de commencer l'aventure, regarde la bande-annonce :</p>
+        </div>
+
+        <!-- ============ VIDÉO ============ -->
+        <div class="video-transition">
+            <video id="videoIntro" controls autoplay>
+                <source src="Titouan et Elisa _ Mission Conquête _.mp4" type="video/mp4">
+                Votre navigateur ne peut pas lire cette vidéo.
+            </video>
+        </div>
+
+        <!-- ============ CHOIX ============ -->
+        <a id="continuer" class="bcommencer" href="chapitre1.html">CONTINUER</a>
+
+    </main>
+
+    <script>
+        // Passage automatique au chapitre suivant quand la vidéo est terminée
+        document.getElementById('videoIntro').addEventListener('ended', function () {
+            window.location.href = 'chapitre1.html';
+        });
+    </script>
+</body>
+</html>
